@@ -32,7 +32,8 @@ public class sicmasm extends OpTab {
 
         int count = 0;
         String readWord = "";
-
+        
+        //gets number of lines
         while ((reader.readLine()) != null) {
             count++;
         }
