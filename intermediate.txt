@@ -1,6 +1,0 @@
-1	102a	label:	mnemonic:START	OP:null	nixbpe0 0	Operand:102A
-2	102a	label:FIRST	mnemonic:MOV	OP:null	nixbpe3 2	Operand:RETADR,%RL
-3	102d	label:	mnemonic:MOV	OP:null	nixbpe1 0	Operand:%RB,#3
-4	1030	label:RETADR	mnemonic:RESW	OP:	nixbpe0 0	Operand:2
-5	1036	label:ALPHA	mnemonic:WORD	OP:	nixbpe0 0	Operand:3
-6	-	label:	mnemonic:END	OP:	nixbpe3 2	Operand:FIRST
