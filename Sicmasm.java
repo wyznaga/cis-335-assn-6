@@ -261,9 +261,11 @@ import java.util.Arrays;
 			}
 
 			//The following code writes Pass 2 in a listing file
+            int lineNum=1;
 			PrintWriter lstout = new PrintWriter(lst, "UTF-8");
-			for (int i = 0; i < list.size(); i++) { //use loop to write line with address, instruction and object code in a lst file
-				if (addressTable.getAddress1(i) == null && ObjectCodeTable.getObjectCode(i) == null) {
+			for (int i = 0; i < list.size(); i++,lineNum++) { //use loop to write line with address, instruction and object code in a lst file
+				lstout.write(lineNum+"\t");
+                if (addressTable.getAddress1(i) == null && ObjectCodeTable.getObjectCode(i) == null) {
 					lstout.write("\t" + list.get(i) + "\n");
 				} else if (i == 4) {
 					lstout.write("\t" + list.get(i) + "\n");
@@ -275,7 +277,7 @@ import java.util.Arrays;
 			}
 			lstout.close();
 
-			//THE FOLLOWING WRITES THE OBJECT CODE TO THE OBJ FILE USING THREE ARRAYS HEAD TEXT AND END
+			//THE FOLLOWING WRITES THE OBJECT CODE TO THE OBJ FILE
 
 			int first, last;
 			int k = 0;
