@@ -17,21 +17,21 @@ public class OpTable {
 
 	//Op code used for each mnemonic we are supposed to handle
 	public int OPcode(String Mnemonic){
-		if(Mnemonic.equals("STL")){
+		if(Mnemonic.equals("STL")||Mnemonic.equals("+STL")){
 			return 0x14;
-		}else if(Mnemonic.equals("LDB")){
+		}else if(Mnemonic.equals("LDB")||Mnemonic.equals("+LDB")){
 			return 0x68;
 		}else if(Mnemonic.equals("+JSUB")||Mnemonic.equals("JSUB")){
 			return 0x48;
-		}else if(Mnemonic.equals("LDA")){
+		}else if(Mnemonic.equals("LDA")||Mnemonic.equals("+LDA")){
 			return 0x00;
-		}else if(Mnemonic.equals("COMP")){
+		}else if(Mnemonic.equals("COMP")||Mnemonic.equals("+COMP")){
 			return 0x28;
-		}else if(Mnemonic.equals("JEQ")){
+		}else if(Mnemonic.equals("JEQ")||Mnemonic.equals("+JEQ")){
 			return 0x30;
-		}else if(Mnemonic.equals("J")){
+		}else if(Mnemonic.equals("J")||Mnemonic.equals("+J")){
 			return 0x3C;
-		}else if(Mnemonic.equals("STA")){
+		}else if(Mnemonic.equals("STA")||Mnemonic.equals("+STA")){
 			return 0x0C;
 		}else if(Mnemonic.equals("CLEAR")){
 			return 0xB4;
@@ -47,9 +47,9 @@ public class OpTable {
 			return 0x54;
 		}else if(Mnemonic.equals("TIXR")){
 			return 0xB8;
-		}else if(Mnemonic.equals("JLT")){
+		}else if(Mnemonic.equals("JLT")||Mnemonic.equals("+JLT")){
 			return 0x38;
-		}else if(Mnemonic.equals("LDX")){
+		}else if(Mnemonic.equals("LDX")||Mnemonic.equals("+LDX")){
 			return 0x04;
 		}else if(Mnemonic.equals("RSUB")){
 			return 0x4C;
@@ -57,11 +57,20 @@ public class OpTable {
 			return 0x50;
 		}else if(Mnemonic.equals("WD")){
 			return 0xDC;
-		}else if(Mnemonic.equals("+STT")){
+		}else if(Mnemonic.equals("+STT")||Mnemonic.equals("STT")){
 			return 0x84;
-		}else if(Mnemonic.equals("LDT")){
+		}else if(Mnemonic.equals("LDT")||Mnemonic.equals("+LDT")){
 			return 0x74;
-		}else{
+		}else if(Mnemonic.equals("LDL")||Mnemonic.equals("+LDL")){
+			return 0x08;
+		}else if(Mnemonic.equals("LDS")||Mnemonic.equals("+LDS")){
+			return 0x6C;
+		}else if(Mnemonic.equals("STB")||Mnemonic.equals("+STB")){
+			return 0x78;
+		}else if(Mnemonic.equals("STS")||Mnemonic.equals("+STS")){
+			return 0x7C;
+		}
+		else{
 			return 0x00;
 		}
 	}
