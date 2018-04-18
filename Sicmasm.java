@@ -340,7 +340,44 @@ import java.util.Arrays;
 
 				}
 			}
-			//WRITE OUT THE OBJECT FILE
+			
+		//FORMAT TO A MINIMUM OF 6 BITS FOR OBJ LENGTH SYNTAX
+		//HEAD FORMAT
+		for(int i=2; i<4; i++){
+				String A="";
+				int c=head[i].length();
+				for(;c<6;c++){
+					A=A+"0";
+				}
+				head[i]=A+""+head[i];
+		}
+		//TEXT FORMAT
+		for (int i = 0; i < text.length; i++){
+			for (int j = 0; j < text[0].length - 1; j++) {
+				if(j==0 || j==2){
+					continue;
+				}
+				else if (text[i][j] != null){
+					String A="";
+					int c= text[i][j].length();
+					for(;c<6; c++){
+						A=A+"0";
+					}
+					text[i][j]=A+""+text[i][j];
+				}
+			}
+		}
+		//END FORMAT
+			String A="";
+			int c=end[1].length();
+			for(;c<6;c++){
+				A=A+"0";
+			}
+			end[1]=A+""+end[1];
+
+
+		
+		//WRITE OUT THE OBJECT FILE
         PrintWriter objout = new PrintWriter(obj, "UTF-8");
 			for(int i=0 ;i<text.length; i++) {
 
