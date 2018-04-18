@@ -31,11 +31,11 @@ public class Sicmasm {
 
 	static RegOpCode register=new RegOpCode(); //used to get the opcode for the special cases where the program uses a register
 
-	public static void main(int argc, String[]args) throws Exception {
-		if (argc != 2) {
+	public static void main( String[]args) throws Exception {
+		/*if (argc != 2) {
 			System.out.print("Error: Invalid syntax entered");
 			System.exit(1);
-		} else {
+		} else { */
 			ArrayList<String> list = new ArrayList<String>();
 			main = new File("/Users/ryanreynolds/Desktop/Assignment 6/src/src/main.asm");
 			obj = new File(main.getName().substring(0, main.getName().lastIndexOf('.')) + ".obj");
@@ -311,6 +311,6 @@ public class Sicmasm {
 				}
 			}
 			objout.close();
-		}
+		//}
 	}
 }
