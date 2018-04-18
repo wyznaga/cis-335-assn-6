@@ -13,7 +13,14 @@ public class RegOpCode {
 	public int getNumber(String reg){
 		if(reg.equals("%RA")){
 			return 00;
-		}else if(reg.equals("%RS")){
+		}
+		else if(reg.equals("%RL")) {
+			return 02;
+		}
+		else if(reg.equals("%RB")) {
+			return 03;
+		}
+		else if(reg.equals("%RS")){
 			return 04;
 		}else if(reg.equals("%RT")){
 			return 05;
