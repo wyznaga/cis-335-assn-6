@@ -31,17 +31,18 @@ import java.util.Arrays;
 
 	static RegOpCode register=new RegOpCode(); //used to get the opcode for the special cases where the program uses a register
 
-	public static void main(String[]args) throws Exception {
-		/*if (argc != 2) {
+	public static void main(String[] args) throws Exception {
+		if (args.length != 1) {
 			System.out.print("Error: Invalid syntax entered");
 			System.exit(1);
-		} else {*/
-			ArrayList<String> list = new ArrayList<String>();
-			main = new File("/Users/ryanreynolds/Desktop/Assignment 6/src/src/main.asm");
+		}
+			ArrayList<String> list = new ArrayList<String>();			
+			
+			main = new File(args[0]);
 			obj = new File(main.getName().substring(0, main.getName().lastIndexOf('.')) + ".obj");
 			lst = new File(main.getName().substring(0, main.getName().lastIndexOf('.')) + ".lst");
             String p;
-			BufferedReader mainTmp = new BufferedReader(new FileReader(new File("/Users/ryanreynolds/Desktop/Assignment 6/src/src/main.asm")));
+			BufferedReader mainTmp = new BufferedReader(new FileReader(main));
 			String mainInLine;
 			int count = 1;
 			while ((mainInLine = mainTmp.readLine()) != null) { //looping through each line in main.asm and add to the a String array until we reach the end of file
