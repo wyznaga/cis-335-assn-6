@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Sicmasm {
+ public class Sicmasm {
 	static String mnemonic;	// mnemonic string
 
 	static int op; // variable to store op code
@@ -31,16 +31,16 @@ public class Sicmasm {
 
 	static RegOpCode register=new RegOpCode(); //used to get the opcode for the special cases where the program uses a register
 
-	public static void main( String[]args) throws Exception {
+	public static void main(String[]args) throws Exception {
 		/*if (argc != 2) {
 			System.out.print("Error: Invalid syntax entered");
 			System.exit(1);
-		} else { */
+		} else {*/
 			ArrayList<String> list = new ArrayList<String>();
 			main = new File("/Users/ryanreynolds/Desktop/Assignment 6/src/src/main.asm");
 			obj = new File(main.getName().substring(0, main.getName().lastIndexOf('.')) + ".obj");
 			lst = new File(main.getName().substring(0, main.getName().lastIndexOf('.')) + ".lst");
-
+            String p;
 			BufferedReader mainTmp = new BufferedReader(new FileReader(new File("/Users/ryanreynolds/Desktop/Assignment 6/src/src/main.asm")));
 			String mainInLine;
 			int count = 1;
@@ -64,40 +64,61 @@ public class Sicmasm {
 						}
 						//handles the MOV instruction by changing it from MOV %RA,ALPHA to LDA ALPHA
 					} else if (str1[i].equals("MOV") || str1[i].equals("+MOV")) {
-						if ((str1[i + 1].charAt(0)) == ('%')) {
+						if(str1[i].charAt(0)=='+')
+						    p="+";
+						else
+						    p="";
+
+					    if ((str1[i + 1].charAt(0)) == ('%')) {
 							if (str1[i + 1].charAt(2) == 'L') {
-								str1[i] = "STL";
+								str1[i] = p+"LDL";
 								str1[i + 1] = str1[i + 1].substring(5);
 							} else if (str1[i + 1].charAt(2) == 'A') {
-								str1[i] = "STA";
+								str1[i] = p+"LDA";
 								str1[i + 1] = str1[i + 1].substring(5);
-							} else {
-								str1[i] = "STX";
+							} else if (str1[i + 1].charAt(2) == 'B') {
+                                str1[i] = p+"LDB";
+                                str1[i + 1] = str1[i + 1].substring(5);
+                            }else if (str1[i + 1].charAt(2) == 'S') {
+                                str1[i] = p+"LDS";
+                                str1[i + 1] = str1[i + 1].substring(5);
+                            }else if (str1[i + 1].charAt(2) == 'T') {
+                                str1[i] = p+"LDT";
+                                str1[i + 1] = str1[i + 1].substring(5);
+                            }
+							else {
+								str1[i] = p+"LDX";
 								str1[i + 1] = str1[i + 1].substring(5);
 							}
-						} else if (str1[i].equals("+MOV")) {
-							str1[i] = "+STT";
-							str1[i + 1] = str1[i + 1].substring(0, str1[i + 1].indexOf(','));
+
 						} else {
-							if ((str1[i + 1].substring(str1[i + 1].length() - 4)).charAt(2) == 'B') {
-								str1[i] = "LDB";
+							if ((str1[i + 1].substring(str1[i + 1].length() - 4)).charAt(3) == 'B') {
+								str1[i] = p+"STB";
 								str1[i + 1] = str1[i + 1].substring(0, str1[i + 1].indexOf(','));
 
-							} else if ((str1[i + 1].substring(str1[i + 1].length() - 4)).charAt(2) == 'A') {
-								str1[i] = "LDA";
+							} else if ((str1[i + 1].substring(str1[i + 1].length() - 4)).charAt(3) == 'A') {
+								str1[i] = p+"STA";
 								str1[i + 1] = str1[i + 1].substring(0, str1[i + 1].indexOf(','));
-							} else if ((str1[i + 1].substring(str1[i + 1].length() - 4)).charAt(2) == 'D') {
-								str1[i] = "LDX";
+							} else if ((str1[i + 1].substring(str1[i + 1].length() - 4)).charAt(3) == 'D') {
+								str1[i] = p+"STX";
 								str1[i + 1] = str1[i + 1].substring(0, str1[i + 1].indexOf(','));
-							} else {
-								str1[i] = "LDT";
+							}
+                            else if ((str1[i + 1].substring(str1[i + 1].length() - 4)).charAt(3) == 'L') {
+                                str1[i] = p+"STL";
+                                str1[i + 1] = str1[i + 1].substring(0, str1[i + 1].indexOf(','));
+                            }
+                            else if ((str1[i + 1].substring(str1[i + 1].length() - 4)).charAt(3) == 'S') {
+                                str1[i] = p+"STS";
+                                str1[i + 1] = str1[i + 1].substring(0, str1[i + 1].indexOf(','));
+                            }else {
+								str1[i] = p+"STT";
 								str1[i + 1] = str1[i + 1].substring(0, str1[i + 1].indexOf(','));
 							}
 						}
 					}
 				}
 				if (str1 != null) {
-					if (str1.length == 3) {            //locate the Mnemonic in each line
+					 if (str1.length == 3) {            //locate the Mnemonic in each line
 						mnemonic = str1[1];
 					} else if (str1.length == 2) {
 						mnemonic = str1[0];
@@ -105,22 +126,27 @@ public class Sicmasm {
 						mnemonic = str1[0];
 					}
 					Pass1Calculation loc = new Pass1Calculation(mnemonic);
-					if (count == 5) {    //Calculate address for each line
+					 if(count==2)
+					     address=0;
+					else if (count == 5) {    //Calculate address for each line
 						address = 6;
 						nxtloc = address + 4;
 					} else {
 						if (mnemonic.equals("BYTE") && str1[0].equals("EOF")) {
 							address = nxtloc;
 							nxtloc = address + 3;
-						} else {
+						}
+						else {
 							address = nxtloc;
 							nxtloc = address + loc.getInstructionSize(mnemonic);
 						}
 					}
 
 					String loc1 = (Integer.toHexString(address)).toUpperCase();
-					if (!str1[0].equals("END"))
-						addressTable.instAddress(count, loc1);    //storing address for each line in the hash table
+
+					if (!str1[0].equals("END")){
+						addressTable.instAddress(count-1, loc1);
+					}    //storing address for each line in the hash table
 					count++;
 
 					if (str1 != null) {
@@ -166,7 +192,7 @@ public class Sicmasm {
 					flag = 0x01;
 				} else if (destination.equals("LENGTH") && Long.parseLong(addressTable.getAddress1(count1), 16) >= Long.parseLong(symTab.getAddress("LENGTH"), 16)) {
 					flag = 0x04;
-				} else if (destination.equals("BUFFER[%EXX]")) {
+				} else if (destination.equals("BUFFER[%RX]")) {
 					flag = 0x0C;
 				} else if (destination.charAt(0) == '#' || Mnemonic.equals("RSUB")) {
 					flag = 0x00;
@@ -249,18 +275,11 @@ public class Sicmasm {
 			}
 			lstout.close();
 
-			//THE FOLLOWING WRITES THE OBJECT CODE TO THE OBJ FILE
-			/* *********************************************
-			 * *********************************************
-			 ********* STILL NEED TO DEBUG HERE***********
-			 * *********************************************
-			 * *********************************************
-			 */
-			PrintWriter objout = new PrintWriter(obj, "UTF-8");
-			int lineCount = 1;
+			//THE FOLLOWING WRITES THE OBJECT CODE TO THE OBJ FILE USING THREE ARRAYS HEAD TEXT AND END
+
 			int first, last;
 			int k = 0;
-			String obj;
+
 			String[][] text = new String[list.size()][14];
 			String[] end = new String[2];
 			String[] head = new String[4];
@@ -271,46 +290,70 @@ public class Sicmasm {
 			head[1] = mainAsString.get(1)[0] + "  ";
 			head[2] = addressTable.getAddress1(1);
 			head[3] = addressTable.getAddress1(list.size() - 2);
-
-			for (int i = 0, j = 0; i < list.size(); i++) {
+            //populate the Text and End arrays
+			for (int i = 0; i < list.size(); i++) {
 
 				if (addressTable.getAddress1(i) != null && ObjectCodeTable.getObjectCode(i) != null) {
 
 
 					if (i + 1 < list.size() && mainAsString.get(i + 1)[0].equals("END")) {
 						end[0] = "E";
-						end[1] = addressTable.getAddress1(2);
+						end[1] = addressTable.getAddress1(1);
 
-					} else {
-						for (; j < 14; j++) {
+					}
+					else {
+						for (int j=3; j < 13; j++, i++) {
 
-							if (text[k][0] == (null)) {
+							if (text[k][1] == (null)) {
 
 								first = Integer.parseInt(addressTable.getAddress1(i), 16);
 								if ((addressTable.getAddress1(i + 9) != null)) {
 									last = Integer.parseInt(addressTable.getAddress1(i + 9), 16);
 								} else {
 									last = Integer.parseInt(addressTable.getAddress1(list.size() - 2), 16);
+                                    end[0] = "E";
+                                    end[1] = addressTable.getAddress1(1);
 								}
 								last = last - first;
-								text[k][j] = "\nT";
+								text[k][0] = "\nT";
 								text[k][1] = addressTable.getAddress1(i);
-								text[k][2] = Integer.toHexString(last);
-								text[k][3] = ObjectCodeTable.getObjectCode(i);
+								text[k][2] = Integer.toHexString(last).toUpperCase();
+								text[k][j] = ObjectCodeTable.getObjectCode(i);
+								check=true;
 
 
 							} else {
 								text[k][j] = ObjectCodeTable.getObjectCode(i);
-								i++;
+
 							}
 						}
 						k++;
+						if (check==true){
+							i--;
+							check=false;
+						}
 					}
 
 
 				}
 			}
+			//WRITE OUT THE OBJECT FILE
+        PrintWriter objout = new PrintWriter(obj, "UTF-8");
+			for(int i=0 ;i<text.length; i++) {
+
+			    if (i == 0)
+                    objout.write(head[0]+""+head[1]+""+head[2]+"^"+head[3]);
+
+
+                for(int j=0;j<text[0].length-1;j++){
+                    if(j==0 && text[i][j]!=null)
+                        objout.write(text[i][j]);
+                    else if(text[i][j]!=null)
+                        objout.write("^"+text[i][j]);
+                }
+            }
+            objout.write("\n" + end[0] + "^" + end[1]);
 			objout.close();
-		//}
-	}
+		}
+	//}
 }
