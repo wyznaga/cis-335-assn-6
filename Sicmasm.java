@@ -128,9 +128,7 @@ import java.util.Arrays;
 					}
 					Pass1Calculation loc = new Pass1Calculation(mnemonic);
 					 if(count==2||count==3){
-					     address=0;
-						nxtloc = address + loc.getInstructionSize(mnemonic);
-					 }
+		address=0;nxtloc = address +loc.getInstructionSize(mnemonic);}
 					else if (count == 5) {    //Calculate address for each line
 						address = 6;
 						nxtloc = address + 4;
